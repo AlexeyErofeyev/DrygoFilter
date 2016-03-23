@@ -1,0 +1,24 @@
+{
+  "name": "drygofilter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexeyErofeyev/DrygoFilter.git"
+  },
+  "author": "Erofeyev Aleksey",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexeyErofeyev/DrygoFilter/issues"
+  },
+  "homepage": "https://github.com/AlexeyErofeyev/DrygoFilter#readme",
+  "devDependencies": {
+    "browser-sync": "^2.11.2",
+    "gulp": "^3.9.1",
+    "gulp-stylus": "^2.3.1"
+  }
+}
