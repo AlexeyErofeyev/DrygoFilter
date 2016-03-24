@@ -1,5 +1,6 @@
-var gulp   = require('gulp'),
-	  stylus = require('gulp-stylus'),
+var gulp        = require('gulp'),
+	  stylus      = require('gulp-stylus'),
+    autoprefixer = require('gulp-autoprefixer'),
     browserSync = require('browser-sync').create(); 
 
 
@@ -16,6 +17,7 @@ gulp.task('js',function() {
 gulp.task('stylus', function () {
   gulp.src('./vendor/css/*.styl')
     .pipe(stylus())
+    .pipe(autoprefixer({browsers: ['last 2 versions']}))
     .pipe(gulp.dest('./app/css'));
 });
 
@@ -34,7 +36,7 @@ gulp.task('watch',function () {
             gulp.run('html');
             gulp.run('stylus');
             gulp.run('js');
-            browserSync.reload();
+            gulp.run(browserSync.reload);
         });
 });
 
