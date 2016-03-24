@@ -1,4 +1,4 @@
-new Promise(function(resolve) {// Дожидаемся загрузки строници
+new Promise(function(resolve) {// Дожидаемся загрузки страницы
 	if(document.radyState === 'complite'){
 		resolve();
 	} else {
@@ -44,9 +44,40 @@ new Promise(function(resolve) {// Дожидаемся загрузки стро
 		    template = Handlebars.compile(sourse),
 		    html     = template({'friends':arr});
 		    
-		document.getElementById('mainList').innerHTML = html;
+		document.getElementById('left_col').innerHTML = html;
+		resolve();
 
 	})
+}).then(function() {// Добавляем обработчики событий
+	var left_col  = document.getElementById('left_col'),
+		right_col = document.getElementById('right_col'), 
+		id = '';
+
+	left_col.addEventListener('dragstart',function(e) {
+		if(e.target.tagName === 'LI'){
+			e.dataTransfer.setData("text/html",e.target.outerHTML);
+			id = e.target.id;
+		}
+	});
+
+
+	right_col.addEventListener('dragover',function(e) {
+		e.preventDefault();
+	});
+
+
+	right_col.addEventListener('drop',function(e) {
+		var	data             = e.dataTransfer.getData("text/html"),
+		    selected_friends = document.getElementById('selected_friends'),
+		    ul               = document.getElementsByClassName('friends_list')[0],
+		    li               = document.getElementById(id);
+
+		ul.removeChild(li);
+		selected_friends.innerHTML += data; 
+		console.log(id)
+	});
+
+
 })
 
 .catch(function(e) {
