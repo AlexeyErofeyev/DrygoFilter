@@ -13,63 +13,8 @@
 		<h1 class="app_header">Выберите друзей</h1>
 		<div class="app_col _left">
 			<input type="text" class="app_input">
-			<div class="friends">
-				<ul>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
-				</ul>
+			<div class="friends" id='mainList'>
+				
 			</div>
 		</div>
 		<div class="app_col _right">
@@ -140,10 +85,17 @@
 
 
 <script id="friends-template" type="text/x-handlebars-template">
- 
+ 	<ul class="friends_list">
+ 	{{#each friends}}
+ 		<li class="friends_item" draggable="true">
+ 			<img src="{{photo_100}}" alt="foto" class="friend_foto">
+ 			<h4 class="friend_name">{{first_name}} {{last_name}}</h4>
+ 		</li>
+ 		{{/each}}
+ 	</ul>
 </script>
 
-
+<script src='http://vk.com/js/api/openapi.js' type="text/javascript"></script>
 <script src='bower_components/handlebars/handlebars.js'></script>
 <script src='js/main.js'></script>
 </body>

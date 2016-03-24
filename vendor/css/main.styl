@@ -36,10 +36,10 @@ body
 	background-color silver
 	
 	&._left
-		float right
+		float left
 		
 	&._right
-		float left
+		float right
 		
 .app_input
 	width 270px
@@ -56,11 +56,12 @@ body
 		box-shadow 1px 1px 1px rgba(0,0,0,.3)
 		
 .friends
-	width 100%
+	width 309px
 	height 451px
 	margin 0 auto
 	background-color white
 	overflow-y scroll
+	overflow-x hidden
 	
 .app_footer
 	width 620px
@@ -82,4 +83,38 @@ body
 	outline none !important
 	&:hover
 		background-color #e85e37
+
+.friends_list
+	list-style none
+	margin 0
+	padding 0
+		
+.friends_item
+	width 309px
+	height 60px
+	padding 6px
+	padding-bottom 2px
+	margin 0
+	&:after
+		content ''
+		clear both
+		display table
+	&:hover
+		background-color silver
+		
+	
+.friend_foto
+	display block
+	float left
+	height 55px
+	width 55px
+	border-radius 50%
+	margin-right 10px
+	
+.friend_name
+	normalFont(17px, darkGray)
+	line-height 18px
+
+
+	
 		

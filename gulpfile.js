@@ -25,7 +25,8 @@ gulp.task('stylus', function () {
 gulp.task('watch',function () {
 
   browserSync.init({
-        server: "./app"
+        server: "./app",
+        port:9000
     });
 
 	gulp.watch([

@@ -37,10 +37,10 @@ body {
   background-color: #f0f0f0;
 }
 .app_col._left {
-  float: right;
+  float: left;
 }
 .app_col._right {
-  float: left;
+  float: right;
 }
 .app_input {
   width: 270px;
@@ -61,11 +61,12 @@ body {
   box-shadow: 1px 1px 1px rgba(0,0,0,0.3);
 }
 .friends {
-  width: 100%;
+  width: 309px;
   height: 451px;
   margin: 0 auto;
   background-color: #fff;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 .app_footer {
   width: 620px;
@@ -91,4 +92,39 @@ body {
 }
 .app_save:hover {
   background-color: #e85e37;
+}
+.friends_list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.friends_item {
+  width: 309px;
+  height: 60px;
+  padding: 6px;
+  padding-bottom: 2px;
+  margin: 0;
+}
+.friends_item:after {
+  content: '';
+  clear: both;
+  display: table;
+}
+.friends_item:hover {
+  background-color: #f0f0f0;
+}
+.friend_foto {
+  display: block;
+  float: left;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.friend_name {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  color: #4f4f4f;
+  line-height: 18px;
 }
