@@ -22,25 +22,20 @@ gulp.task('stylus', function () {
 });
 
 
-gulp.task('watch',function () {
+ gulp.task('watch', function() {
+    gulp.watch('./vendor/index.html', ['html',browserSync.reload]);
+    gulp.watch('./vendor/css/*.styl', ['stylus',browserSync.reload]);
+    gulp.watch('./vendor/js/main.js', ['js',browserSync.reload]);
+  });
 
-  browserSync.init({
+
+ gulp.task('server',function() {
+   browserSync.init({
         server: "./app",
         port:9000
     });
-
-	gulp.watch([
-		'./vendor/index.html',
-		'./vendor/css/*.styl',
-    './vendor/js/main.js'
-		]).on('change',function() {
-            gulp.run('html');
-            gulp.run('stylus');
-            gulp.run('js');
-            gulp.run(browserSync.reload);
-        });
-});
+ });
 
 
 
-gulp.task('default',['html','stylus','js','watch']);
+gulp.task('default',['html','stylus','js','watch','server']);

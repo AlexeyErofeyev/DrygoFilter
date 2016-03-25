@@ -1,13 +1,12 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto:400,300,700");
 body {
-  background-image: url("../images/1353319175.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-image: url("../images/bg-219.png");
 }
 .app {
   width: 620px;
   height: 600px;
   background-color: #f0f0f0;
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.6);
   border-radius: 10px;
   overflow: hidden;
   position: absolute;
@@ -127,4 +126,17 @@ body {
   font-size: 17px;
   color: #4f4f4f;
   line-height: 18px;
+}
+.cross:hover {
+  cursor: pointer;
+}
+#left_col .cross {
+  color: #f00;
+  margin-left: 10px;
+  font-size: 20px;
+}
+#right_col .cross {
+  color: #008000;
+  margin-left: 10px;
+  font-size: 20px;
 }
