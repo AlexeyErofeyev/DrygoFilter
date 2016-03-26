@@ -39,26 +39,26 @@ new Promise(function(resolve) {// Дожидаемся загрузки стра
 		    if(res.error){
 				reject(new Error(res.error.error_msg));
 			} else {
-				localStorage.setItem('mainArr',JSON.stringify(res.response));
-				resolve();
+				// localStorage.setItem('mainArr',JSON.stringify(res.response));
+				resolve(res.response);
 			}
 		}); 
 	});
-}).then(function() {// Выводим списокт друзей
+}).then(function(arr) {// Выводим списокт друзей
 	return new Promise(function(resolve, reject){
 		    
-		servant.render(JSON.parse(localStorage.mainArr),'mainList','left_col',resolve);
+		servant.render(arr,'mainList','left_col',resolve);
 
 	});
 
-}).then(function() {// Добавляем обработчики событий
+}).then(function(arr) {// Добавляем обработчики событий
 	var left_col   = document.getElementById('left_col'),
 		right_col  = document.getElementById('right_col'), 
 		ul_right   = document.getElementById('selected_friends'),
 		ul_left    = document.getElementById('mainList'),
 		left_inp   = document.getElementById('left_inp'),
 		right_inp  = document.getElementById('right_inp'),
-		mainArr    = JSON.parse(localStorage.mainArr),
+		mainArr    = arr,
 		save       = document.getElementById('save');
 		var id = '';
 		var selectedArr = [];
@@ -69,7 +69,6 @@ var dragstart = function(e) {
 		 id = e.target.id;
 
 		e.dataTransfer.setData("text/html",e.target.outerHTML);
-		localStorage.setItem(e.target.id, servant.find(e.target.id));
 	}
 };
 
@@ -90,7 +89,8 @@ var dragover = function(e) {
 		servant.render(mainArr,'mainList','left_col');
 		servant.render(selectedArr,'selected_friends','right_col');
 
-		if(left_inp.value){ left_inp.dispatchEvent(new Event('keyup')); }
+			if(left_inp.value){ left_inp.dispatchEvent(new Event('keyup')); }
+			if(right_inp.value){ right_inp.dispatchEvent(new Event('keyup')); }
 
 	});
 
@@ -100,7 +100,8 @@ var dragover = function(e) {
 		servant.render(mainArr,'mainList','left_col');
 		servant.render(selectedArr,'selected_friends','right_col');
 		
-		if(right_inp.value){ right_inp.dispatchEvent(new Event('keyup')); }
+			if(left_inp.value){ left_inp.dispatchEvent(new Event('keyup')); }
+			if(right_inp.value){ right_inp.dispatchEvent(new Event('keyup')); }
 
 	});
 
@@ -192,27 +193,29 @@ var servant =  (function ( ) {
 		    document.getElementById(parent).innerHTML = html;
 
 		    if(resolve){
-		    	resolve();
+		    	resolve(arr);
 		    }
 		},
-		find: function(ID) {
+		// find: function(ID) {
 
-			var arr = JSON.parse(localStorage.mainArr);
-			for(var i = 0, len = arr.length; i < len; i++){
+		// 	var arr = JSON.parse(localStorage.mainArr);
+		// 	for(var i = 0, len = arr.length; i < len; i++){
 
-				if(arr[i].uid == ID){ return JSON.stringify(arr[i]); }
-			}
+		// 		if(arr[i].uid == ID){ return JSON.stringify(arr[i]); }
+		// 	}
 
-		},
+		// },
 		relocate:function (from,to,ID) {
-			var index;
+			var index = -1;
 			for(var i = 0, len = from.length; i < len; i++){
 				if(from[i].uid == ID){
 					to.push(from[i]);
 					index = i; 
 				} 
 			}
-			from.splice(index,1);
+			if(index > -1){
+				from.splice(index,1);				
+			}
 		},
 		match:function(from,to,string) {
 			
@@ -227,7 +230,7 @@ var servant =  (function ( ) {
 		
     return {
     	render    : privat.render,
-    	find      : privat.find,
+    	// find      : privat.find,
     	relocate  : privat.relocate,
     	match     : privat.match
 };
