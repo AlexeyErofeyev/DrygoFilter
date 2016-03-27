@@ -41,21 +41,6 @@ body {
   color: #fff;
   position: relative;
 }
-.logout {
-  background-image: url("../images/index.png");
-  width: 14px;
-  height: 14px;
-  background-position: -57px -5px;
-  position: absolute;
-  top: 15px;
-  right: 30px;
-}
-.logout:hover {
-  right: 23px;
-  width: 22px;
-  height: 22px;
-  background-position: -117px -5px;
-}
 .app_col {
   width: 309px;
   margin: 0;

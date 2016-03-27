@@ -20,9 +20,12 @@ new Promise(function(resolve) {// Дожидаемся загрузки стра
 	});
 }).then(function() {// Берем список ID друзей и передаем его в виде строки в следующий THEN();
 	return new Promise(function(resolve,reject) {
-		// if(localStorage.right_col || localStorage.left_col){
+		if(servant.findCookie()){// Если куки есть, то передаем false
+			console.log('Нашел cookie')
+			resolve(false);
 
-		// } else {
+		} else {
+
 			VK.api('friends.get',{},function(res) {
 				if(res.error){
 					reject(new Error(res.error.error_msg));
@@ -30,25 +33,40 @@ new Promise(function(resolve) {// Дожидаемся загрузки стра
 					resolve(res.response.join(','));
 				}
 			});
-		// }
+		}
 			
 	});
-}).then(function(friends) {//Берем имя, фамилию и адрес фото каждого друга и передаем в виде строки в localStorage;
+}).then(function(friends) {//Берем имя, фамилию и адрес фото каждого друга и передаем в виде массива;
 	return new Promise(function(resolve, reject){
-		VK.api("users.get", {user_ids:friends,fields:'photo_100'}, function(res) {
-		    if(res.error){
-				reject(new Error(res.error.error_msg));
-			} else {
-				// localStorage.setItem('mainArr',JSON.stringify(res.response));
-				resolve(res.response);
-			}
-		}); 
+		if(friends){
+
+			VK.api("users.get", {user_ids:friends,fields:'photo_100'}, function(res) {
+			    if(res.error){
+					reject(new Error(res.error.error_msg));
+				} else {
+					resolve(res.response);
+				}
+			}); 
+
+		} else {
+
+			console.log('Без обращения к API')
+			resolve(false);
+
+		}
 	});
 }).then(function(arr) {// Выводим списокт друзей
 	return new Promise(function(resolve, reject){
-		    
-		servant.render(arr,'mainList','left_col',resolve);
+		 if(arr){//Если куки нет, то рендерим левыйстолбец с данными из api
+			servant.render(arr,'mainList','left_col');
+		 }  else {// Если куки есть, то рендерим оба столбца
 
+		 	servant.render(JSON.parse(localStorage.leftFriends),'mainList','left_col');
+		 	servant.render(JSON.parse(localStorage.rightFriends),'selected_friends','right_col');
+
+		 }
+
+		resolve(arr)
 	});
 
 }).then(function(arr) {// Добавляем обработчики событий
@@ -58,10 +76,11 @@ new Promise(function(resolve) {// Дожидаемся загрузки стра
 		ul_left    = document.getElementById('mainList'),
 		left_inp   = document.getElementById('left_inp'),
 		right_inp  = document.getElementById('right_inp'),
-		mainArr    = arr,
-		save       = document.getElementById('save');
-		var id = '';
-		var selectedArr = [];
+		save       = document.getElementById('save'),
+		id         = '',
+		 
+		mainArr     = arr ? arr : JSON.parse(localStorage.leftFriends),
+		selectedArr = arr ? [] : JSON.parse(localStorage.rightFriends);
 
 // ПЕРЕТАСКИВАНИЕ НАЧАЛО
 var dragstart = function(e) {
@@ -167,12 +186,13 @@ var dragover = function(e) {
 // СОХРАНЕНИЕ НАЧАЛО
 
  save.addEventListener('click',function(e) {
- 	var fromRight = JSON.stringify(selectedArr);
- 	var fromLeft  = JSON.stringify(mainArr);
- 	localStorage.right_col = fromRight;
- 	localStorage.left_col = fromLeft;
- })
-
+ 	localStorage.setItem('leftFriends',JSON.stringify(mainArr));
+ 	localStorage.setItem('rightFriends',JSON.stringify(selectedArr));
+ 	var date = new Date();
+ 	date.setTime(date.getTime() + 300000);// кука будет жить 5мин.
+ 	document.cookie = "DrygoFilter=true; expires=" + date.toGMTString();
+ 	alert('Сохранено');
+ });
 // СОХРАНЕНИЕ КОНЕЦ
 
 })//then
@@ -185,26 +205,13 @@ var dragover = function(e) {
 
 var servant =  (function ( ) {
 	var privat = {
-		render:function(arr,id,parent,resolve) {
+		render:function(arr,id,parent) {
 			var sourse   = document.getElementById('friends-template').innerHTML,
 			    template = Handlebars.compile(sourse),
 			    html     = template({'friends':arr,'id':id});
 
 		    document.getElementById(parent).innerHTML = html;
-
-		    if(resolve){
-		    	resolve(arr);
-		    }
 		},
-		// find: function(ID) {
-
-		// 	var arr = JSON.parse(localStorage.mainArr);
-		// 	for(var i = 0, len = arr.length; i < len; i++){
-
-		// 		if(arr[i].uid == ID){ return JSON.stringify(arr[i]); }
-		// 	}
-
-		// },
 		relocate:function (from,to,ID) {
 			var index = -1;
 			for(var i = 0, len = from.length; i < len; i++){
@@ -225,13 +232,24 @@ var servant =  (function ( ) {
 				}
 			})
 			
+		},
+		findCookie:function() {
+			var arrCockie = document.cookie.split(';');
+			for(var i = 0, l = arrCockie.length; i < l ;i++){
+				if(arrCockie[i].indexOf('DrygoFilter') !== -1){
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}	
 		
     return {
-    	render    : privat.render,
-    	// find      : privat.find,
-    	relocate  : privat.relocate,
-    	match     : privat.match
+    	render     : privat.render,
+    	findCookie : privat.findCookie,
+    	relocate   : privat.relocate,
+    	match      : privat.match
 };
 }());
+
